@@ -6,7 +6,7 @@ export default function Main() {
       <div className="max-w-[280px] mx-auto">
         <div className="flex flex-col items-center pt-[15vh]">
           <h2 className="mb-5 text-white font-mono font-bold text-xl">
-            Main Page
+            Login In
           </h2>
         </div>
       </div>
