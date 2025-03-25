@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "lint:fix": "eslint . --fix",
+    "lint:fix": "next lint --fix",
     "typeScript": "tsc",
     "prepare": "husky"
   },
