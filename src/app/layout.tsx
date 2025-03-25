@@ -1,32 +1,26 @@
 import type {Metadata} from 'next';
-import {Geist, Geist_Mono} from 'next/font/google';
+import {Roboto_Mono} from 'next/font/google';
 import './globals.css';
+import {Providers} from '@/redux/provider';
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from 'react-toastify';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const font = Roboto_Mono({
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
-  title: 'Trolla Dashboard',
-  description: 'Trolla Dashboard',
+  title: 'Trolla',
+  description: 'Trolla dashboard',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+      <body className={font.className}>
+        <Providers>{children} </Providers>
+        <ToastContainer />
       </body>
     </html>
   );

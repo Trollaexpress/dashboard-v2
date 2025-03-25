@@ -1,5 +1,5 @@
 'use client';
-//first editing
+
 export default function Main() {
   return (
     <section className="h-screen bg-black ">
