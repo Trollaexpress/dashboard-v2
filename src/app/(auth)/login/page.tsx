@@ -1,5 +1,4 @@
 'use client';
-
 import Image from 'next/image';
 import { FormEvent } from 'react';
 
@@ -11,7 +10,7 @@ export default function Main() {
   };
 
   return (
-    <section className="flex h-screen items-center  justify-center bg-gray-100">
+    <section className="flex h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-lg">
         <div className="flex justify-center">
           <Image 
@@ -26,14 +25,14 @@ export default function Main() {
         <form className="space-y-4" onSubmit={handleLoginSubmit}>
           <div>
             <label className="block text-sm py-2 font-medium text-gray-600" htmlFor="email">
-              Email
+              Username
             </label>
             <input
               id="email"
               type="email"
               autoComplete="email"
-              className="mt-1 w-full rounded-lg border  border-gray-600 px-4 py-2 focus:ring focus:ring-orange-400 placeholder:text-gray-500"
-              placeholder="Enter your email"
+              className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black focus:ring focus:ring-primary placeholder:text-gray-500"
+              placeholder="Enter your Username"
               required
             />
           </div>
@@ -45,7 +44,7 @@ export default function Main() {
               id="password"
               type="password"
               autoComplete="current-password"
-              className="mt-1 w-full rounded-lg border  border-gray-600 px-4 py-2 focus:ring focus:ring-orange-400 placeholder:text-gray-500"
+              className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black focus:ring focus:ring-primary placeholder:text-gray-500"
               placeholder="Enter your password"
               required
             />
