@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { FormEvent } from 'react';
+import {FormEvent} from 'react';
 
 export default function Main() {
   const handleLoginSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
@@ -17,7 +17,7 @@ export default function Main() {
             width={100}
             height={100}
             priority
-            style={{ width: 'auto', height: 'auto' }}
+            style={{width: 'auto', height: 'auto'}}
           />
         </div>
 
