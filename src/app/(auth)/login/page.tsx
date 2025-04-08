@@ -1,9 +1,8 @@
 'use client';
 import Image from 'next/image';
-import { FormEvent, useState } from 'react';
+import {FormEvent, useState} from 'react';
 
 const LOGIN_API = 'https://testapp.trollaexpress.com/api/v1/login';
-
 export default function Main() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
@@ -22,25 +21,32 @@ export default function Main() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({email, password}),
       });
 
       const responseData = await response.json();
 
       if (!response.ok || !responseData.success) {
-        throw new Error(responseData.message || 'Authentication failed. Please verify your credentials.');
+        throw new Error(
+          responseData.message ||
+            'Authentication failed. Please verify your credentials.',
+        );
       }
 
-     
       localStorage.setItem('access_token', responseData.accessToken);
       localStorage.setItem('refresh_token', responseData.refreshToken);
       localStorage.setItem('user_data', JSON.stringify(responseData.user));
 
-      // Handle post-login redirection
       console.log('Authentication successful:', responseData.user);
-      // Consider adding router.push('/dashboard') here
     } catch (error) {
-      setErrorMessage(error.message || 'Authentication service unavailable. Please try later.');
+      let errorMessage =
+        'Authentication service unavailable. Please try later.';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+      setErrorMessage(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +62,7 @@ export default function Main() {
             width={100}
             height={100}
             priority
-            style={{ width: 'auto', height: 'auto' }}
+            style={{width: 'auto', height: 'auto'}}
           />
         </div>
 
@@ -66,7 +72,7 @@ export default function Main() {
             type="email"
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black placeholder:text-gray-500 outline-none focus:ring-0 focus:border-trolla hover:border-trolla"
             placeholder="Username"
             required
@@ -78,7 +84,7 @@ export default function Main() {
               type={isPasswordVisible ? 'text' : 'password'}
               autoComplete="current-password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black placeholder:text-gray-500 outline-none focus:ring-0 focus:border-trolla hover:border-trolla pr-10"
               placeholder="Password"
               required
@@ -86,8 +92,7 @@ export default function Main() {
             <button
               type="button"
               onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-trolla focus:outline-none"
-            >
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-trolla focus:outline-none">
               {isPasswordVisible ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -95,8 +100,7 @@ export default function Main() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
-                >
+                  className="w-5 h-5">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -110,8 +114,7 @@ export default function Main() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
-                >
+                  className="w-5 h-5">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -134,8 +137,7 @@ export default function Main() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+            className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla disabled:opacity-50 disabled:cursor-not-allowed">
             {isLoading ? 'Logging...' : 'Login'}
           </button>
         </form>
