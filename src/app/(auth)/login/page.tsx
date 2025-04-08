@@ -1,11 +1,49 @@
 'use client';
 import Image from 'next/image';
-import {FormEvent, useState} from 'react';
+import { FormEvent, useState } from 'react';
+
+const LOGIN_API = 'https://testapp.trollaexpress.com/api/v1/login';
 
 export default function Main() {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleLoginSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (formEvent: FormEvent<HTMLFormElement>) => {
     formEvent.preventDefault();
+    setErrorMessage('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(LOGIN_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok || !responseData.success) {
+        throw new Error(responseData.message || 'Authentication failed. Please verify your credentials.');
+      }
+
+     
+      localStorage.setItem('access_token', responseData.accessToken);
+      localStorage.setItem('refresh_token', responseData.refreshToken);
+      localStorage.setItem('user_data', JSON.stringify(responseData.user));
+
+      // Handle post-login redirection
+      console.log('Authentication successful:', responseData.user);
+      // Consider adding router.push('/dashboard') here
+    } catch (error) {
+      setErrorMessage(error.message || 'Authentication service unavailable. Please try later.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -18,39 +56,47 @@ export default function Main() {
             width={100}
             height={100}
             priority
-            style={{width: 'auto', height: 'auto'}}
+            style={{ width: 'auto', height: 'auto' }}
           />
         </div>
 
-        <form className="space-y-4" onSubmit={handleLoginSubmit} noValidate>
+        <form className="space-y-4" onSubmit={handleSubmit} noValidate>
           <input
             id="email"
             type="email"
             autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black placeholder:text-gray-500 outline-none focus:ring-0 focus:border-trolla hover:border-trolla"
             placeholder="Username"
+            required
           />
 
           <div className="relative">
             <input
               id="password"
-              type={showPassword ? 'text' : 'password'}
+              type={isPasswordVisible ? 'text' : 'password'}
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black placeholder:text-gray-500 outline-none focus:ring-0 focus:border-trolla hover:border-trolla pr-10"
               placeholder="Password"
+              required
             />
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-trolla focus:outline-none">
-              {showPassword ? (
+              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-trolla focus:outline-none"
+            >
+              {isPasswordVisible ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5">
+                  className="w-5 h-5"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -64,7 +110,8 @@ export default function Main() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5">
+                  className="w-5 h-5"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -80,10 +127,16 @@ export default function Main() {
             </button>
           </div>
 
+          {errorMessage && (
+            <p className="text-red-500 text-sm">{errorMessage}</p>
+          )}
+
           <button
             type="submit"
-            className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla">
-            Login
+            disabled={isLoading}
+            className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? 'Logging...' : 'Login'}
           </button>
         </form>
       </div>
