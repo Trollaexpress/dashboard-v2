@@ -1,10 +1,24 @@
-import {configureStore} from '@reduxjs/toolkit';
+
+// store.ts
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import rootReducer from './root-reducer';
+import storage from './storage'; 
 
-import {FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER} from 'redux-persist';
+// Create persist config
+const persistConfig = {
+  key: 'root',
+  version: 1,
+  storage,
+  whitelist: ['auth'],
+};
 
+// Persisted reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// Configure store
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer, // ✅ use persisted reducer
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -13,7 +27,9 @@ export const store = configureStore({
     }),
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
+// Persistor for wrapping app
+export const persistor = persistStore(store);
+
+// Types
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
