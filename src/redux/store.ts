@@ -1,24 +1,33 @@
+// // store.ts
 
-// store.ts
-import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import rootReducer from './root-reducer';
-import storage from './storage'; 
+import {configureStore, combineReducers} from '@reduxjs/toolkit';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import userReducer from './slice/auth-slice';
 
-// Create persist config
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['auth'],
 };
 
-// Persisted reducer
+const rootReducer = combineReducers({
+  user: userReducer,
+});
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Configure store
 export const store = configureStore({
-  reducer: persistedReducer, // ✅ use persisted reducer
+  reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -27,9 +36,7 @@ export const store = configureStore({
     }),
 });
 
-// Persistor for wrapping app
 export const persistor = persistStore(store);
 
-// Types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

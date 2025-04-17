@@ -1,34 +1,32 @@
 'use client';
 
 import Image from 'next/image';
-import { RootState } from '@/redux/store';
-import { FormEvent, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { loginUser } from '../../../redux/slice/auth-slice';
-import { useRouter } from 'next/navigation';
-
+import {RootState} from '@/redux/store';
+import {FormEvent, useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
+import {loginUser} from '../../../redux/slice/auth-slice';
+import {useRouter} from 'next/navigation';
 
 export default function Main() {
   const dispatch = useAppDispatch();
-  const { isLoading, error } = useAppSelector((state: RootState) => state.auth);
+  const {isLoading, error} = useAppSelector((state: RootState) => state.user);
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
-
   const handleSubmit = async (formEvent: FormEvent<HTMLFormElement>) => {
     formEvent.preventDefault();
     try {
-      const result = await dispatch(loginUser({ email, password })).unwrap();
+      const result = await dispatch(loginUser({email, password})).unwrap();
       console.log('Login Response:', result);
-      router.push('/dashboard'); // or wherever the user should land
+      router.push('/dashboard');
     } catch (err) {
       console.error('Login Failed:', err);
     }
   };
-  
+
   return (
     <section className="flex h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-lg">
@@ -39,7 +37,7 @@ export default function Main() {
             width={100}
             height={100}
             priority
-            style={{ width: 'auto', height: 'auto' }}
+            style={{width: 'auto', height: 'auto'}}
           />
         </div>
 
@@ -69,8 +67,7 @@ export default function Main() {
             <button
               type="button"
               onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-trolla focus:outline-none"
-            >
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-trolla focus:outline-none">
               {isPasswordVisible ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -78,8 +75,7 @@ export default function Main() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
-                >
+                  className="w-5 h-5">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -93,8 +89,7 @@ export default function Main() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
-                >
+                  className="w-5 h-5">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -115,8 +110,7 @@ export default function Main() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+            className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla disabled:opacity-50 disabled:cursor-not-allowed">
             {isLoading ? 'Logging...' : 'Login'}
           </button>
         </form>

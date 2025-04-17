@@ -1,5 +1,5 @@
+// // provider.tsx
 
-// provider.tsx
 'use client';
 
 import {store, persistor} from './store';
