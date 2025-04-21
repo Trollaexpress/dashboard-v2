@@ -1,14 +1,19 @@
-
-import { cn } from '@/utils/utils';
-import { ButtonHTMLAttributes } from 'react';
+import {cn} from '../../utils/utils';
+import {ButtonHTMLAttributes} from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'outline' | 'ghost' | 'destructive';
   size?: 'sm' | 'md' | 'lg';
 }
 
-export function Button({ className, variant = 'default', size = 'md', ...props }: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
+export function Button({
+  className,
+  variant = 'default',
+  size = 'md',
+  ...props
+}: ButtonProps) {
+  const baseStyles =
+    'inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
   const variantStyles = {
     default: 'bg-indigo-600 text-white hover:bg-indigo-700',
     outline: 'border border-gray-300 hover:bg-gray-100',
@@ -23,7 +28,12 @@ export function Button({ className, variant = 'default', size = 'md', ...props }
 
   return (
     <button
-      className={cn(baseStyles, variantStyles[variant], sizeStyles[size], className)}
+      className={cn(
+        baseStyles,
+        variantStyles[variant],
+        sizeStyles[size],
+        className,
+      )}
       {...props}
     />
   );

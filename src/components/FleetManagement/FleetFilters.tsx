@@ -1,4 +1,10 @@
-const tabs = ["All Vehicles", "Available", "In Transit", "Maintenance", "Breakdown"];
+const tabs = [
+  'All Vehicles',
+  'Available',
+  'In Transit',
+  'Maintenance',
+  'Breakdown',
+];
 
 export function FleetFilters() {
   return (
@@ -6,8 +12,7 @@ export function FleetFilters() {
       {tabs.map((tab, i) => (
         <button
           key={i}
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition text-sm"
-        >
+          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition text-sm">
           {tab}
         </button>
       ))}

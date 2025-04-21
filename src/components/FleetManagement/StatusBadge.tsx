@@ -1,4 +1,3 @@
-
 type Props = {
   status: 'Active' | 'In Transit' | 'Maintenance' | 'Breakdown' | 'Available';
 };
@@ -11,9 +10,10 @@ const colors: Record<string, string> = {
   Available: 'bg-green-500',
 };
 
-export function StatusBadge({ status }: Props) {
+export function StatusBadge({status}: Props) {
   return (
-    <span className={`text-xs px-3 py-1 rounded-full text-white ${colors[status]}`}>
+    <span
+      className={`text-xs px-3 py-1 rounded-full text-white ${colors[status]}`}>
       {status}
     </span>
   );

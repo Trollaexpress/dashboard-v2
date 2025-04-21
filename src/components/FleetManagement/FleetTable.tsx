@@ -1,7 +1,11 @@
+import {StatusBadge} from './StatusBadge';
 
-import { StatusBadge } from './StatusBadge';
-
-type VehicleStatus = 'Active' | 'In Transit' | 'Maintenance' | 'Breakdown' | 'Available';
+type VehicleStatus =
+  | 'Active'
+  | 'In Transit'
+  | 'Maintenance'
+  | 'Breakdown'
+  | 'Available';
 
 type Vehicle = {
   id: string;
