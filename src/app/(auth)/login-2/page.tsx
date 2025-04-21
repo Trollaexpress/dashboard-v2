@@ -2,7 +2,7 @@
 
 import {useState, useEffect} from 'react';
 import Image from 'next/image';
-import { Eye, EyeOff, Sun, Moon } from 'lucide-react';
+import {Eye, EyeOff, Sun, Moon} from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -28,22 +28,19 @@ export default function Login() {
   };
 
   return (
-    <div className={`flex h-screen items-center justify-center ${isDarkMode ? 'bg-black' : 'bg-gray-100'}`}>
-      <div className={`w-full max-w-md px-6 py-8 rounded-lg shadow-md ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+    <div
+      className={`flex h-screen items-center justify-center ${isDarkMode ? 'bg-black' : 'bg-gray-100'}`}>
+      <div
+        className={`w-full max-w-md px-6 py-8 rounded-lg shadow-md ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
         {/* Theme Toggle */}
         <div className="absolute top-4 right-4">
-          <button 
-            onClick={toggleTheme} 
-            className={`p-2 rounded-full ${isDarkMode ? 'bg-gray-800 text-yellow-400' : 'bg-gray-200 text-gray-800'}`}
-          >
-            {isDarkMode ? (
-              <Sun size={20} />
-            ) : (
-              <Moon size={20} />
-            )}
+          <button
+            onClick={toggleTheme}
+            className={`p-2 rounded-full ${isDarkMode ? 'bg-gray-800 text-yellow-400' : 'bg-gray-200 text-gray-800'}`}>
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
-        
+
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <Image
@@ -54,7 +51,7 @@ export default function Login() {
             className={`h-auto ${!isDarkMode && 'hidden'}`}
           />
           <Image
-            src="/trolla-logo.png" 
+            src="/trolla-logo.png"
             alt="Trolla Logo"
             width={120}
             height={40}
@@ -62,7 +59,8 @@ export default function Login() {
           />
         </div>
 
-        <h2 className={`text-2xl font-semibold mb-6 text-center ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+        <h2
+          className={`text-2xl font-semibold mb-6 text-center ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
           Welcome back!
         </h2>
 
@@ -72,8 +70,8 @@ export default function Login() {
               type="email"
               placeholder="name@trolla.com"
               className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 ${
-                isDarkMode 
-                  ? 'border-gray-700 bg-gray-800 text-white' 
+                isDarkMode
+                  ? 'border-gray-700 bg-gray-800 text-white'
                   : 'border-gray-300 bg-gray-50 text-gray-900'
               }`}
               value={email}
@@ -87,8 +85,8 @@ export default function Login() {
               type={showPassword ? 'text' : 'password'}
               placeholder="Password"
               className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 ${
-                isDarkMode 
-                  ? 'border-gray-700 bg-gray-800 text-white' 
+                isDarkMode
+                  ? 'border-gray-700 bg-gray-800 text-white'
                   : 'border-gray-300 bg-gray-50 text-gray-900'
               }`}
               value={password}
@@ -98,14 +96,12 @@ export default function Login() {
             <button
               type="button"
               className={`absolute right-3 top-1/2 transform -translate-y-1/2 ${
-                isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'
+                isDarkMode
+                  ? 'text-gray-400 hover:text-gray-300'
+                  : 'text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? (
-                <Eye size={20} />
-              ) : (
-                <EyeOff size={20} />
-              )}
+              {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
             </button>
           </div>
 
@@ -118,7 +114,9 @@ export default function Login() {
                 checked={rememberMe}
                 onChange={() => setRememberMe(!rememberMe)}
               />
-              <label htmlFor="remember" className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <label
+                htmlFor="remember"
+                className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                 Remember me
               </label>
             </div>

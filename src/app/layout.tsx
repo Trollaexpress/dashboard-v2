@@ -1,26 +1,38 @@
 import type {Metadata} from 'next';
-import {Roboto_Mono} from 'next/font/google';
+import {Inter} from 'next/font/google';
 import './globals.css';
-import {Providers} from '@/redux/provider';
-import 'react-toastify/dist/ReactToastify.css';
-import {ToastContainer} from 'react-toastify';
+import {ThemeProvider} from '@/components/theme-provider';
+import ClientSidebar from '@/components/client-sidebar';
+import {ThemeContextProvider} from '@/contexts/theme-context';
 
-const font = Roboto_Mono({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700'],
-});
+const inter = Inter({subsets: ['latin']});
 
 export const metadata: Metadata = {
-  title: 'Trolla',
-  description: 'Trolla dashboard',
+  title: 'Trolla Dashboard',
+  description: 'Logistics management dashboard',
 };
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en">
-      <body className={font.className}>
-        <Providers>{children} </Providers>
-        <ToastContainer />
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${inter.className} flex min-h-screen bg-gray-50 dark:bg-[#0f172a]`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange>
+          <ThemeContextProvider>
+            <ClientSidebar />
+            <main className="flex-1 overflow-y-auto transition-all w-full lg:pl-0">
+              {children}
+            </main>
+          </ThemeContextProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
