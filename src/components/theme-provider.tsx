@@ -29,7 +29,9 @@ export function ThemeProvider({children, ...props}: ThemeProviderProps) {
     try {
       // Test localStorage access
       localStorage.getItem('theme');
-    } catch (e:any) {
+    } catch (e: unknown) {
+      // Handle potential errors accessing localStorage
+      console.error('Error accessing localStorage:', e);
       handleStorageError();
     }
 

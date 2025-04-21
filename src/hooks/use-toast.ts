@@ -23,7 +23,9 @@ const actionTypes = {
 } as const;
 
 let count = 0;
-
+if (actionTypes.ADD_TOAST === actionTypes.ADD_TOAST) {
+  // handle toast add
+}
 function genId() {
   count = (count + 1) % Number.MAX_SAFE_INTEGER;
   return count.toString();

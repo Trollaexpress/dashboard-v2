@@ -13,7 +13,6 @@ import {Bell, Plus} from 'lucide-react';
 export default function Dashboard() {
   // const {toggleTheme, theme} = useThemeContext();
   // const [mounted, setMounted] = useState(false);
-  
 
   // useEffect(() => {
   //   setMounted(true);
@@ -37,7 +36,7 @@ export default function Dashboard() {
         <div className="flex items-center space-x-3 mt-4 md:mt-0">
           <ThemeToggle />
 
-          <button type='button'  className="relative">
+          <button type="button" className="relative">
             <Bell className="h-5 w-5 text-gray-400 dark:text-dark-text-muted" />
             <span className="absolute -top-1 -right-1 w-4 h-4 bg-ui-red rounded-full text-[10px] flex items-center justify-center text-white">
               3

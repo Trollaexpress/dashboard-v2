@@ -41,8 +41,8 @@ export function Sidebar() {
       if (window.innerWidth < 1024) {
         setMobileOpen(false);
       }
-    } catch (error:any) {
-      setError('Navigation failed. Please try again.');
+    } catch (error: unknown) {
+      setError('Navigation failed. Please try again.' + error);
       setTimeout(() => setError(null), 3000);
     }
   };
