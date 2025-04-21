@@ -8,6 +8,13 @@ const config: Config = {
     extend: {
       colors: {
         trolla: colors.trolla,
+        gray: colors.gray,
+        indigo: colors.indigo,
+        blue: colors.blue,
+        green: colors.green,
+        red: colors.red,
+        yellow: colors.yellow,
+        white: colors.white,
       },
     },
   },
