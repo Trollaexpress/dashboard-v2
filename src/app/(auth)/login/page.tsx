@@ -1,11 +1,30 @@
 'use client';
+
 import Image from 'next/image';
+import {RootState} from '@/redux/store';
 import {FormEvent, useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
+import {loginUser} from '../../../redux/slice/auth-slice';
+import {useRouter} from 'next/navigation';
 
 export default function Main() {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleLoginSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
+  const dispatch = useAppDispatch();
+  const {isLoading, error} = useAppSelector((state: RootState) => state.user);
+
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = async (formEvent: FormEvent<HTMLFormElement>) => {
     formEvent.preventDefault();
+    try {
+      const result = await dispatch(loginUser({email, password})).unwrap();
+      console.log('Login Response:', result);
+      router.push('/dashboard');
+    } catch (err) {
+      console.error('Login Failed:', err);
+    }
   };
 
   return (
@@ -22,28 +41,34 @@ export default function Main() {
           />
         </div>
 
-        <form className="space-y-4" onSubmit={handleLoginSubmit} noValidate>
+        <form className="space-y-4" onSubmit={handleSubmit} noValidate>
           <input
             id="email"
             type="email"
             autoComplete="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black placeholder:text-gray-500 outline-none focus:ring-0 focus:border-trolla hover:border-trolla"
             placeholder="Username"
+            required
           />
 
           <div className="relative">
             <input
               id="password"
-              type={showPassword ? 'text' : 'password'}
+              type={isPasswordVisible ? 'text' : 'password'}
               autoComplete="current-password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
               className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black placeholder:text-gray-500 outline-none focus:ring-0 focus:border-trolla hover:border-trolla pr-10"
               placeholder="Password"
+              required
             />
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-trolla focus:outline-none">
-              {showPassword ? (
+              {isPasswordVisible ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -80,10 +105,13 @@ export default function Main() {
             </button>
           </div>
 
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+
           <button
             type="submit"
-            className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla">
-            Login
+            disabled={isLoading}
+            className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla disabled:opacity-50 disabled:cursor-not-allowed">
+            {isLoading ? 'Logging...' : 'Login'}
           </button>
         </form>
       </div>
