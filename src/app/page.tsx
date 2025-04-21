@@ -1,15 +1,20 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/redux/hooks';
+
 export default function Main() {
-  return (
-    <section className="h-screen bg-black ">
-      <div className="max-w-[280px] mx-auto">
-        <div className="flex flex-col items-center pt-[15vh]">
-          <h2 className="mb-5 text-white font-mono font-bold text-xl">
-            Main Page
-          </h2>
-        </div>
-      </div>
-    </section>
-  );
+  const router = useRouter();
+  const { accessToken, user } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (accessToken && user) {
+      router.push('/dashboard'); 
+    } else {
+      router.push('/login');
+    }
+  }, [accessToken, user, router]);
+
+  return null; 
 }
