@@ -1,17 +1,17 @@
 'use client';
 
 import Image from 'next/image';
-import { RootState } from '../../../redux/store';
-import { FormEvent, useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { loginUser } from '../../../redux/slice/auth-slice';
-import { useRouter } from 'next/navigation';
-
-
+import {RootState} from '../../../redux/store';
+import {FormEvent, useState, useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
+import {loginUser} from '../../../redux/slice/auth-slice';
+import {useRouter} from 'next/navigation';
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
-  const { isLoading, error, accessToken, user } = useAppSelector((state: RootState) => state.auth);
+  const {isLoading, error, accessToken, user} = useAppSelector(
+    (state: RootState) => state.auth,
+  );
   const router = useRouter();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -24,16 +24,16 @@ export default function LoginPage() {
     }
   }, [accessToken, user, router]);
 
-const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  try {
-    await dispatch(loginUser({ email, password })).unwrap();
-    
-    window.location.href = '/dashboard';
-  } catch (err) {
-    console.error('Login Failed:', err);
-  }
-};
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await dispatch(loginUser({email, password})).unwrap();
+
+      window.location.href = '/dashboard';
+    } catch (err) {
+      console.error('Login Failed:', err);
+    }
+  };
 
   return (
     <section className="flex h-screen items-center justify-center bg-gray-100">
@@ -45,7 +45,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
             width={100}
             height={100}
             priority
-            style={{ width: 'auto', height: 'auto' }}
+            style={{width: 'auto', height: 'auto'}}
           />
         </div>
 
@@ -55,7 +55,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
             type="email"
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black placeholder:text-gray-500 outline-none focus:ring-0 focus:border-trolla hover:border-trolla"
             placeholder="Email"
             required
@@ -67,7 +67,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
               type={isPasswordVisible ? 'text' : 'password'}
               autoComplete="current-password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black placeholder:text-gray-500 outline-none focus:ring-0 focus:border-trolla hover:border-trolla pr-10"
               placeholder="Password"
               required
@@ -75,8 +75,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
             <button
               type="button"
               onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-trolla focus:outline-none"
-            >
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-trolla focus:outline-none">
               {isPasswordVisible ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -84,8 +83,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
-                >
+                  className="w-5 h-5">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -99,8 +97,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
-                >
+                  className="w-5 h-5">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -121,8 +118,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+            className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla disabled:opacity-50 disabled:cursor-not-allowed">
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>

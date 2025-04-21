@@ -13,9 +13,7 @@ export default function DashboardLayout({
 }) {
   return (
     <ProtectedRoute>
-      <DashboardLayoutClient>
-        {children}
-      </DashboardLayoutClient>
+      <DashboardLayoutClient>{children}</DashboardLayoutClient>
     </ProtectedRoute>
   );
 }

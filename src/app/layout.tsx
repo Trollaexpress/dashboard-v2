@@ -1,9 +1,9 @@
-import type { Metadata } from 'next';
-import { Roboto_Mono } from 'next/font/google';
+import type {Metadata} from 'next';
+import {Roboto_Mono} from 'next/font/google';
 import './globals.css';
-import { Providers } from '../redux/provider';
+import {Providers} from '../redux/provider';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 import InitializeAuth from '../components/InitializeAuth';
 
 const font = Roboto_Mono({
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: 'Trolla dashboard',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
       <body className={font.className}>

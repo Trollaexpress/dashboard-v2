@@ -1,14 +1,12 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import {useAppSelector} from '@/redux/hooks';
+import {useEffect} from 'react';
+import {useRouter} from 'next/navigation';
 
 export default function DashboardPage() {
-  const dispatch = useAppDispatch();
   const router = useRouter();
-  const { user, accessToken } = useAppSelector((state) => state.auth);
+  const {accessToken} = useAppSelector(state => state.auth);
 
   useEffect(() => {
     if (!accessToken) {
@@ -16,15 +14,16 @@ export default function DashboardPage() {
     }
   }, [accessToken, router]);
 
-
-
   if (!accessToken) {
-    return null; 
+    return null;
   }
 
   return (
     <div className="p-6">
-      {/* ... rest of your dashboard code ... */}
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+      </div>
+      {/* Your dashboard content here */}
     </div>
   );
 }

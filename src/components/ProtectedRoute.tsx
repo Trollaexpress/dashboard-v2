@@ -1,17 +1,21 @@
 // ProtectedRoute.tsx
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/redux/hooks';
+import {useEffect} from 'react';
+import {useRouter} from 'next/navigation';
+import {useAppSelector} from '@/redux/hooks';
 
-export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+export default function ProtectedRoute({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
-  const { accessToken, user, isLoading } = useAppSelector((state) => state.auth);
+  const {accessToken, user, isLoading} = useAppSelector(state => state.auth);
 
   useEffect(() => {
     if (!isLoading && (!accessToken || !user)) {
-      router.push('/login'); 
+      router.push('/login');
     }
   }, [accessToken, user, isLoading, router]);
 
