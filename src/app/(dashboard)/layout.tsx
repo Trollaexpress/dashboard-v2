@@ -1,10 +1,19 @@
 import DashboardLayoutClient from '../../components/DashboardLayoutClient';
+import ProtectedRoute from '../../components/ProtectedRoute';
 
 export const metadata = {
-  title: 'Trolla dashboard',
+  title: 'Trolla Dashboard',
   description: 'Trolla dashboard',
 };
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
-  return <DashboardLayoutClient>{children}</DashboardLayoutClient>;
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <ProtectedRoute>
+      <DashboardLayoutClient>{children}</DashboardLayoutClient>
+    </ProtectedRoute>
+  );
 }

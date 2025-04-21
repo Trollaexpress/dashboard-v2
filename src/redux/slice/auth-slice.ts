@@ -1,5 +1,5 @@
-import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
-import axiosClient from '../../utils/api/axios-root-client';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import axios from 'axios';
 import type {AxiosError} from 'axios';
 
 interface User {
@@ -38,16 +38,17 @@ export const loginUser = createAsyncThunk<
   {rejectValue: string}
 >('auth/loginUser', async ({email, password}, {rejectWithValue}) => {
   try {
-    const res = await axiosClient.post<AuthResponse>('/login', {
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL;
+    const res = await axios.post<AuthResponse>(`${backendUrl}/login`, {
       email,
       password,
     });
     return res.data;
   } catch (error) {
     const err = error as AxiosError<{message: string}>;
-    const message =
-      err.response?.data?.message || 'Login failed. Please try again.';
-    return rejectWithValue(message);
+    return rejectWithValue(
+      err.response?.data?.message || 'Login failed. Please try again.',
+    );
   }
 });
 
@@ -55,13 +56,26 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout(state) {
+    logout: state => {
       state.user = null;
       state.accessToken = null;
       state.refreshToken = null;
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      localStorage.removeItem('user_data');
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('persist:root');
+      }
+    },
+    initializeAuth: state => {
+      if (typeof window !== 'undefined') {
+        const accessToken = localStorage.getItem('access_token');
+        const refreshToken = localStorage.getItem('refresh_token');
+        const userData = localStorage.getItem('user_data');
+
+        if (accessToken && refreshToken && userData) {
+          state.accessToken = accessToken;
+          state.refreshToken = refreshToken;
+          state.user = JSON.parse(userData);
+        }
+      }
     },
   },
   extraReducers: builder => {
@@ -70,31 +84,27 @@ const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(
-        loginUser.fulfilled,
-        (state, action: PayloadAction<AuthResponse>) => {
-          state.isLoading = false;
-          state.accessToken = action.payload.accessToken;
-          state.refreshToken = action.payload.refreshToken;
-          state.user = action.payload.user;
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
+        state.user = action.payload.user;
 
+        if (typeof window !== 'undefined') {
           localStorage.setItem('access_token', action.payload.accessToken);
           localStorage.setItem('refresh_token', action.payload.refreshToken);
           localStorage.setItem(
             'user_data',
             JSON.stringify(action.payload.user),
           );
-        },
-      )
-      .addCase(
-        loginUser.rejected,
-        (state, action: PayloadAction<string | undefined>) => {
-          state.isLoading = false;
-          state.error = action.payload ?? 'Login failed. Please try again.';
-        },
-      );
+        }
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || 'Login failed';
+      });
   },
 });
 
-export const {logout} = authSlice.actions;
+export const {logout, initializeAuth} = authSlice.actions;
 export default authSlice.reducer;

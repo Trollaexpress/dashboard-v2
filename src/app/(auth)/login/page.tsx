@@ -1,27 +1,35 @@
 'use client';
 
 import Image from 'next/image';
-import {RootState} from '@/redux/store';
-import {FormEvent, useState} from 'react';
+import {RootState} from '../../../redux/store';
+import {FormEvent, useState, useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {loginUser} from '../../../redux/slice/auth-slice';
 import {useRouter} from 'next/navigation';
 
-export default function Main() {
+export default function LoginPage() {
   const dispatch = useAppDispatch();
-  const {isLoading, error} = useAppSelector((state: RootState) => state.user);
+  const {isLoading, error, accessToken, user} = useAppSelector(
+    (state: RootState) => state.auth,
+  );
+  const router = useRouter();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
 
-  const handleSubmit = async (formEvent: FormEvent<HTMLFormElement>) => {
-    formEvent.preventDefault();
-    try {
-      const result = await dispatch(loginUser({email, password})).unwrap();
-      console.log('Login Response:', result);
+  useEffect(() => {
+    if (accessToken && user) {
       router.push('/dashboard');
+    }
+  }, [accessToken, user, router]);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await dispatch(loginUser({email, password})).unwrap();
+
+      window.location.href = '/dashboard';
     } catch (err) {
       console.error('Login Failed:', err);
     }
@@ -49,7 +57,7 @@ export default function Main() {
             value={email}
             onChange={e => setEmail(e.target.value)}
             className="mt-1 w-full rounded-lg border border-gray-600 px-4 py-2 text-black placeholder:text-gray-500 outline-none focus:ring-0 focus:border-trolla hover:border-trolla"
-            placeholder="Username"
+            placeholder="Email"
             required
           />
 
@@ -111,7 +119,7 @@ export default function Main() {
             type="submit"
             disabled={isLoading}
             className="w-full rounded-lg border border-trolla bg-trolla py-2 text-white transition hover:bg-white hover:text-trolla disabled:opacity-50 disabled:cursor-not-allowed">
-            {isLoading ? 'Logging...' : 'Login'}
+            {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
       </div>
